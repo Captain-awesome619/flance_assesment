@@ -19,7 +19,7 @@ function App() {
   const [error, setError] = useState(null);
   const [isCelsius, setIsCelsius] = useState(true);
   const [time, setTime] = useState(new Date());
-  const [color, setColor] = useState("blue");
+  const [color, setColor] = useState("");
 
   const API_KEY = process.env.REACT_APP_API_KEY;
   const WEATHER_API_URL = "https://api.openweathermap.org/data/2.5/weather";
@@ -211,12 +211,12 @@ setloader(true)
     {forecast && (
       <div className="w-screen flex items-center justify-center">
      <div className=" duration-500  dark:bg-black dark:from-black dark:to-black bg-gradient-to-b from-[#17265C] to-[#026EBDAD] p-6 rounded-xl w-[95%]  lg:w-[97%] lg:max-w-4xl">
-     <h3 className="text-[14px] w-full border-b-[1px] border-white pb-[0.5rem] font-semibold mb-4">Condition Throughout Today</h3>
+     <h3 className="text-[14px] text-white w-full border-b-[1px] border-white pb-[0.5rem] font-semibold mb-4">Condition Throughout Today</h3>
      <div className="overflow-x-auto no-scrollbar">
        <div className="flex items-center justify-center gap-[1rem]">
          {forecast?.list?.slice(0, 20).map((hour, index) => (
            <div key={index} className="text-center flex-shrink-0">
-             <p className="text-[12px] lg:text-[14px]">
+             <p className="text-white font-semibold text-[12px] lg:text-[14px]">
                {new Date(hour.dt * 500).toLocaleTimeString([], {
                  hour: '2-digit',
                  minute: '2-digit',
@@ -227,8 +227,8 @@ setloader(true)
                alt={hour.weather[0].description}
                className="mx-auto w-12 h-12"
              />
-             <p className="capitalize text-[12px] lg:text-[14px]">{hour.weather[0].description}</p>
-             <p className="text-[12px] lg:text-[14px]">{convertTemperature(hour?.main?.temp).toFixed(1)}°{isCelsius ? "C" : "F"}</p>
+             <p className="text-white font-semibold capitalize text-[12px] lg:text-[14px]">{hour.weather[0].description}</p>
+             <p className="text-white font-semibold text-[12px] lg:text-[14px]">{convertTemperature(hour?.main?.temp).toFixed(1)}°{isCelsius ? "C" : "F"}</p>
            </div>
          ))}
        </div>
@@ -240,13 +240,13 @@ setloader(true)
     {forecast && (
         <div className="">
       <div className=" duration-500  dark:bg-black dark:from-black dark:to-black   bg-gradient-to-b from-[#00235D] to-[#012561B8] p-6 rounded-xl   ">
-        <h3 className="lg:text-[14px] text-[12px] w-full border-b-[1px] border-white pb-[0.5rem] font-semibold mb-4">5-Day Forecast</h3>
+        <h3 className="lg:text-[14px] text-white text-[12px] w-full border-b-[1px] border-white pb-[0.5rem] font-semibold mb-4">5-Day Forecast</h3>
         <div className="">
           {forecast.list
             .filter((item, index) => index % 8 === 0)
             .map((day, index) => (
               <div key={index} className="text-center flex flex-row mx-auto lg:gap-[4rem] gap-[1rem]  items-center justify-around ">
-                <p  className="text-[12px] lg:text-[14px]">
+                <p  className="text-white font-semibold text-[12px] lg:text-[14px]">
                   {new Date(day.dt * 1000).toLocaleDateString('en-US', {
                     weekday: 'long',
                   })}
@@ -258,14 +258,14 @@ setloader(true)
                 />
                 
                 <div className="flex items-center justify-center gap-[0.3rem]">
-                <p className="text-[12px] lg:text-[14px]">  {convertTemperature(day?.main?.temp).toFixed(1)}°{isCelsius ? "C" : "F"} </p>
+                <p className="text-white font-semibold text-[12px] lg:text-[14px]">  {convertTemperature(day?.main?.temp).toFixed(1)}°{isCelsius ? "C" : "F"} </p>
   
                   <img 
         src={icon2}
         alt="icon"
         className=""
         />
-                  <p  className="text-[12px] lg:text-[14px]">{convertTemperature(day?.main?.temp).toFixed(1)}°{isCelsius ? "C" : "F"} </p>
+                  <p  className="text-white font-semibold text-[12px] lg:text-[14px]">{convertTemperature(day?.main?.temp).toFixed(1)}°{isCelsius ? "C" : "F"} </p>
                 </div>
 
 
