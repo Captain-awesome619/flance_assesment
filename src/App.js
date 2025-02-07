@@ -311,7 +311,7 @@ setloader(true)
         <p className="text-[15px] font-bold text-white">WIND</p>
         </div>
         <p className="text-white text-[28px] font-bold">
-    {weather?.wind?.speed}  <span className="text-[13px] font-bold">km/h</span>
+    {weather?.wind?.speed}  <span className="text-[15px] font-bold">km/h</span>
   </p>
         </div>
         <p className="text-[16px] text-white font-semibold">Time now:  {time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}.</p>
