@@ -149,8 +149,8 @@ setloader(true)
     {weather && (
       <div>
       <div className="duration-500 relative w-20 h-8 dark:bg-black bg-gray-300 rounded-full flex items-center p-1 border mb-4 border-gray-500">
-          <span className="text-[14px] font-bold text-[#00235D] dark:text-white absolute left-2"> °C</span>
-          <span className="text-[14px] font-bold text-[#00235D] dark:text-white absolute right-2">°F</span>
+          <span className="text-[16px] font-bold text-[#00235D] dark:text-white absolute left-2"> °C</span>
+          <span className="text-[16px] font-bold text-[#00235D] dark:text-white absolute right-2">°F</span>
           <div
             onClick={toggleTemperatureUnit}
             className={`w-6 h-6 dark:bg-white bg-blue-500 rounded-full shadow-md cursor-pointer transform transition-transform ${isCelsius ? "translate-x-0" : "translate-x-12"}`}
