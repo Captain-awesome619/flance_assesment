@@ -147,7 +147,7 @@ setloader(true)
     {error && <p className="text-red-400">{error}</p>}
   
     {weather && (
-      <div>
+      <div className="pr-[2rem] lg:pr-[2rem]" >
       <div className="duration-500 relative w-20 h-8 dark:bg-black bg-gray-300 rounded-full flex items-center p-1 border mb-4 border-gray-500">
           <span className="text-[16px] font-bold text-[#00235D] dark:text-white absolute left-2"> °C</span>
           <span className="text-[16px] font-bold text-[#00235D] dark:text-white absolute right-2">°F</span>
