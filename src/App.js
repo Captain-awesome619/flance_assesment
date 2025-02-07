@@ -157,7 +157,7 @@ setloader(true)
           ></div>
         </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:flex flex-row gap-6 w-full max-w-4xl">
-        <div className="duration-500 dark:bg-black dark:from-black dark:to-black bg-gradient-to-b from-[#17265C] to-[#026EBDAD] bg-opacity-20 p-6 rounded-xl text-center w-[300px] lg:w-[450px] lg:h-[295px]">
+        <div className="duration-500 dark:bg-black dark:from-black dark:to-black bg-gradient-to-b from-[#17265C] to-[#026EBDAD] bg-opacity-20 p-6 rounded-xl text-center w-[320px] lg:w-[450px] lg:h-[295px]">
         <div className="flex gap-[0.5rem] justify-end items-center">
         < IoLocationSharp color="white" size={20} />
           <h2 className="text-2xl font-semibold ">
