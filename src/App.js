@@ -11,6 +11,7 @@ import icon4 from "../src/assests/icon4.png"
 import PulseLoader from "react-spinners/PulseLoader"
 import ThemeButton from "./toggle";
 import { useTheme } from "next-themes";
+import { useCallback } from "react";
 function App() {
   const [query, setQuery] = useState("");
   const [loader, setloader] = useState(true);
@@ -33,40 +34,24 @@ function App() {
   }, [time]);
 
 
-  useEffect(() => {
-    if (!API_KEY) {
-      setError("Missing API key. Please set it in your environment variables.");
-      return;
+  const fetchWeather = useCallback(async (lat ,lon) => {
+    try {
+      setloader(true);
+      setError(null); // Clear previous errors
+
+      const [weatherResponse, forecastResponse] = await Promise.all([
+        axios.get(`${WEATHER_API_URL}?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`),
+        axios.get(`${FORECAST_API_URL}?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`)
+      ]);
+
+      setWeather(weatherResponse.data);
+      setForecast(forecastResponse.data);
+    } catch (error) {
+      setError("Error fetching weather data. Please try again later.");
+      console.error("Weather API Error:", error);
+    } finally {
+      setloader(false);
     }
-    if (!navigator.geolocation) {
-      setError("Geolocation is not supported by your browser.");
-      return;
-    }
-setloader(true)
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const { latitude, longitude } = position.coords;
-        try {
-          const weatherResponse = await axios.get(
-            `${WEATHER_API_URL}?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`
-          );
-          const forecastResponse = await axios.get(
-            `${FORECAST_API_URL}?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`
-          );
-          setWeather(weatherResponse.data);
-          setForecast(forecastResponse.data);
-          setError(null);
-          setloader(false)
-        } catch (error) {
-          setError("Error fetching weather data. Please try again later.");
-          console.error("Error fetching weather data", error);
-        }
-      },
-      (geoError) => {
-        setError("Geolocation is disabled or permission denied. Please allow location access.");
-        console.error("Geolocation error", geoError);
-      }
-    );
   }, []);
 
   const searchWeather = async () => {
@@ -93,6 +78,39 @@ setloader(true)
     }
   };
 
+  const fetchWeatherDefault = useCallback(() => {
+    fetchWeather(6.5244, 3.3792);
+  }, [fetchWeather]);
+
+  useEffect(() => {
+    if (!API_KEY) {
+      setError("Missing API key. Please set it in your environment variables.");
+      return;
+    }
+
+    setloader(true);
+
+    if (!navigator.geolocation) {
+      setError("Geolocation is not supported by your browser. Showing Lagos weather.");
+      fetchWeatherDefault();
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        fetchWeather(position.coords.latitude, position.coords.longitude);
+      },
+      (geoError) => {
+        console.error("Geolocation error", geoError);
+        setError("Geolocation is disabled or permission denied. Showing Lagos weather.");
+        fetchWeatherDefault();
+      }
+    );
+  }, [fetchWeather, fetchWeatherDefault]);
+
+
+
+
   const toggleTemperatureUnit = () => {
     setIsCelsius((prev) => !prev);
   };
@@ -111,9 +129,7 @@ setloader(true)
     <h1 className="text-3xl font-bold mb-6">Weather Forecast</h1>
     <div className=" mb-4">
     <ThemeButton />
-  
     </div>
-    
     </div>
   { loader === true ?
     <PulseLoader
@@ -121,7 +137,6 @@ setloader(true)
     size={100}
     aria-label="Loading Spinner"
     data-testid="loader"
-    
     />
 : <>
     <div className="flex w-screen lg:justify-end lg:items-end items-center justify-center pr-[0.5rem] lg:pr-[3rem] gap-2 mb-6 relative  ">
@@ -143,9 +158,7 @@ setloader(true)
         Search
       </button>
     </div>
-  
     {error && <p className="text-red-400">{error}</p>}
-  
     {weather && (
       <div className="pr-[2rem] lg:pr-[2rem]" >
       <div className="duration-500 relative w-20 h-8 dark:bg-black bg-gray-300 rounded-full flex items-center p-1 border mb-4 border-gray-500">
@@ -189,7 +202,6 @@ setloader(true)
         />
   <p  className="text-[15px] font-semibold text-white">Sunset: {new Date(weather?.sys?.sunset * 1000).toLocaleTimeString()}</p>
 </div>
-
 <div className=" dark:bg-black dark:from-black dark:to-black flex items-start justify-between flex-col gap-[2.5rem] bg-gradient-to-b from-[#17265C] to-[#026EBDAD] p-6 rounded-xl w-[214px] h-[295px] text-center">
 <div className="flex  gap-[0.5rem]">
         <MdWaterDrop  size={20} color="white" />
@@ -200,14 +212,10 @@ setloader(true)
       ? `${weather?.rain['1h']} mm (last hour)`
       : "No recent rainfall"}
   </p>
-</div> 
-  
-        
+</div>   
       </div>
       </div>
-
     )}
-  
     {forecast && (
       <div className="w-screen flex items-center justify-center">
      <div className=" duration-500  dark:bg-black dark:from-black dark:to-black bg-gradient-to-b from-[#17265C] to-[#026EBDAD] p-6 rounded-xl w-[95%]  lg:w-[97%] lg:max-w-4xl">
@@ -256,10 +264,8 @@ setloader(true)
                   alt={day.weather[0].description}
                   className="mx-auto w-12 h-12"
                 />
-                
                 <div className="flex items-center justify-center gap-[0.3rem]">
                 <p className="text-white font-semibold text-[12px] lg:text-[14px]">  {convertTemperature(day?.main?.temp).toFixed(1)}°{isCelsius ? "C" : "F"} </p>
-  
                   <img 
         src={icon2}
         alt="icon"
@@ -267,18 +273,11 @@ setloader(true)
         />
                   <p  className="text-white font-semibold text-[12px] lg:text-[14px]">{convertTemperature(day?.main?.temp).toFixed(1)}°{isCelsius ? "C" : "F"} </p>
                 </div>
-
-
-                
               </div>
-              
             ))}
-
         </div>
-        
       </div>
       </div>
-      
     )}
    <div className="flex flex-row gap-[1rem]">
   <div className=" duration-500  dark:bg-black dark:from-black dark:to-black  flex items-start justify-between flex-col gap-[2.5rem] bg-gradient-to-b from-[#17265C] to-[#026EBDAD] p-6 rounded-xl w-[214px] h-[295px] ">
@@ -296,10 +295,7 @@ setloader(true)
   </p>
         </div>
         <p className="text-[16px] text-white font-semibold">The dew point is 6o right now.</p>
-  
 </div> 
-  
-
 <div className="duration-500  dark:bg-black dark:from-black dark:to-black  flex items-start justify-between flex-col gap-[2.5rem] bg-gradient-to-b from-[#17265C] to-[#026EBDAD] p-6 rounded-xl w-[214px] h-[295px] ">
   <div className="flex flex-col  gap-[2rem]">
 <div className="flex  gap-[0.5rem]">
@@ -317,13 +313,10 @@ setloader(true)
         <p className="text-[16px] text-white font-semibold">Time now:  {time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}.</p>
 </div> 
 </div> 
-
         </div>
         </>
 }
   </div>
-  
   );
 }
-
 export default App;
