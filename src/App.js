@@ -211,7 +211,7 @@ setloader(true)
     {forecast && (
       <div className="w-screen flex items-center justify-center">
      <div className=" duration-500  dark:bg-black dark:from-black dark:to-black bg-gradient-to-b from-[#17265C] to-[#026EBDAD] p-6 rounded-xl w-[95%]  lg:w-[97%] lg:max-w-4xl">
-     <h3 className="text-[14px] text-white w-full border-b-[1px] border-white pb-[0.5rem] font-semibold mb-4">Condition Throughout Today</h3>
+     <h3 className="text-[15px] lg:text-[16px] text-white w-full border-b-[1px] border-white pb-[0.5rem] font-bold mb-4">Condition Throughout Today</h3>
      <div className="overflow-x-auto no-scrollbar">
        <div className="flex items-center justify-center gap-[1rem]">
          {forecast?.list?.slice(0, 20).map((hour, index) => (
@@ -240,13 +240,13 @@ setloader(true)
     {forecast && (
         <div className="">
       <div className=" duration-500  dark:bg-black dark:from-black dark:to-black   bg-gradient-to-b from-[#00235D] to-[#012561B8] p-6 rounded-xl   ">
-        <h3 className="lg:text-[14px] text-white text-[12px] w-full border-b-[1px] border-white pb-[0.5rem] font-semibold mb-4">5-Day Forecast</h3>
+        <h3 className="lg:text-[16px] text-white text-[15px] w-full border-b-[1px] border-white pb-[0.5rem] font-bold mb-4">5-Day Forecast</h3>
         <div className="">
           {forecast.list
             .filter((item, index) => index % 8 === 0)
             .map((day, index) => (
               <div key={index} className="text-center flex flex-row mx-auto lg:gap-[4rem] gap-[1rem]  items-center justify-around ">
-                <p  className="text-white font-semibold text-[12px] lg:text-[14px]">
+                <p  className="text-white font-bold text-[12px] lg:text-[14px]">
                   {new Date(day.dt * 1000).toLocaleDateString('en-US', {
                     weekday: 'long',
                   })}
