@@ -132,12 +132,15 @@ function App() {
     </div>
     </div>
   { loader === true ?
+  <>
     <PulseLoader
     color= {color}
     size={100}
     aria-label="Loading Spinner"
     data-testid="loader"
     />
+    {error && <p className="text-red-400">{error}</p>}
+    </>
 : <>
     <div className="flex w-screen lg:justify-end lg:items-end items-center justify-center pr-[0.5rem] lg:pr-[3rem] gap-2 mb-6 relative  ">
     
